@@ -10,7 +10,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 
 
-public class SeleniumTest {
+public class NathaliaTest {
 
 	@Before
 	public void setup(){
