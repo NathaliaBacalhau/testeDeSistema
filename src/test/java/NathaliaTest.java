@@ -2,66 +2,109 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.By.ByLinkText;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 
 
 public class NathaliaTest {
 
-	@Before
-	public void setup(){
+	@BeforeEach
+	public void setup() {
 		System.setProperty("webdriver.chrome.driver", "driver/chromedriver");
-	}
-	
-    @Test
-    public void helloSeleniumTest(){
-        //https://www.selenium.dev/documentation/webdriver/browsers/
-		System.setProperty("webdriver.chrome.driver", "driver/chromedriver.exe");
-		// ChromeOptions options = new ChromeOptions();
-		// options.addArguments("--remote-allow-origins=*");
-		// WebDriver driver = new ChromeDriver(options);
-		WebDriver driver = new ChromeDriver();
 
+	}
+
+	@Test
+	public void nomeSiteTeste() {
+		System.setProperty("webdriver.chrome.driver", "driver/chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
 		driver.get("https://brasilescola.uol.com.br/");
-		
+
 		String currentUrl = driver.getCurrentUrl();
 		String expected = "https://brasilescola.uol.com.br/";
-		
+
 		assertEquals(expected, currentUrl);
-		
+
 		driver.quit();
-    }
+	}
+
+	//Clica em disciplina e compara url
+	@Test
+	public void nomeDisciplinaTeste() {
+		System.setProperty("webdriver.chrome.driver", "driver/chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		driver.get("https://brasilescola.uol.com.br/");
+		WebElement disciplina = driver.findElement(By.className("menu-item-link"));
+		disciplina.click();
+
+		String currentUrl = driver.getCurrentUrl();
+		String expectedUrl = "https://brasilescola.uol.com.br/disciplinas";
+
+		assertEquals(expectedUrl, currentUrl);
+
+		driver.quit();
+	}
 	
 
-	// Escreva um script para abrir google.com e verifique se o título é Google
+	//Move o para o elemento search-mobile e verifica se o atributo placeHolder tem o conteudo "Pesquise aqui"
 	@Test
-	public void test1(){
+	public void placeHolderSearchMobileTest() {
+		System.setProperty("webdriver.chrome.driver", "driver/chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		driver.get("https://brasilescola.uol.com.br/");
+		WebElement searchMobileElement = driver.findElement(By.id("search-mobile"));
+		new Actions(driver).moveToElement(searchMobileElement).perform();
 		
-	}
-	// Escreva um script para abrir a https://pt.wikipedia.org e procure algum
-	// elemento via ID e clique nele
-	@Test
-	public void test2(){
-		
+		assertEquals("Pesquise aqui", driver.findElement(By.id(("search-mobile"))).getAttribute("placeholder"));
+
+		driver.quit();
+
 	}
 
-	// Abra o site do globo.com, procure no html, o elemento da barra de pesquisa, 
-	// envie uma string "fantastico" e submeta a busca
+	//Encontra o elemento serach-mobile e envia nathalia, confirma a alteracao de url
 	@Test
-	public void test3(){
-		
+	public void searchNathaliaTest() {
+		System.setProperty("webdriver.chrome.driver", "driver/chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		driver.get("https://brasilescola.uol.com.br/");
+		WebElement searchMobileElement = driver.findElement(By.id("search-mobile"));
+		searchMobileElement.sendKeys("nathalia");
+		searchMobileElement.submit();
+
+		String currentUrl = driver.getCurrentUrl();
+		String expectedUrl = "https://brasilescola.uol.com.br/busca?q=nathalia";
+
+		assertEquals(expectedUrl, currentUrl);
+
+		driver.quit();
 	}
 
-	// Abra o site do globo.com, procure por algum elemento responsivo ao hover do mouse.
-	// utilize o actions para mover o mouse (sem clicar) para este elemento
 	@Test
-	public void test4(){
+	public void test4() {
+		System.setProperty("webdriver.chrome.driver", "driver/chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		driver.get("https://brasilescola.uol.com.br/");
 		
-	}
+		WebElement contatoClass = driver.findElement(By.className("Contato"));
+		contatoClass.click();
+		
+		Select formSelectClass = new Select(driver.findElement(By.className("form select")));
+		formSelectClass.selectByIndex(1);
+		//terminar
+		
+		String currentUrl = driver.getCurrentUrl();
+		String expectedUrl = "https://brasilescola.uol.com.br/busca?q=nathalia";
 
+		assertEquals(expectedUrl, currentUrl);
+
+		driver.quit();
+	}
 
 }
